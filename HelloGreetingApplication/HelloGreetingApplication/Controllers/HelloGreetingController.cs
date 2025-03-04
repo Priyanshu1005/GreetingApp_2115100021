@@ -1,108 +1,121 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ModelLayer.Model;
+using BusinessLayer.Service;
+using BusinessLayer.Interface;
+using NLog;
+using RepositoryLayer.Service;
 
 namespace HelloGreetingApplication.Controllers
 {
-
-    /// <summary>
-    /// class providing API for HelloGreeting
-    /// </summary>
-
-
     [ApiController]
     [Route("[controller]")]
     public class HelloGreetingController : ControllerBase
-
     {
-        private readonly ILogger<HelloGreetingController> _logger;
+        private readonly IGreetingBL _greetingBL;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        /// <summary>
-        /// Constructor to initialize logger.
-        /// </summary>
-        public HelloGreetingController(ILogger<HelloGreetingController> logger)
+        public HelloGreetingController(IGreetingBL greetingBL)
         {
-            _logger = logger;
+            _greetingBL = greetingBL;
         }
 
-        /// <summary>
-        /// Get Method to get the greeting message
-        /// </summary>
-        /// <returns> Hello World!</returns>
         [HttpGet]
         public IActionResult Get()
         {
-
-            _logger.LogInformation("GET request received.");
-            ResponseModel<string> responseModel = new ResponseModel<string>();
-            responseModel.Success = true;
-            responseModel.Message = " Hello to Greeting App API EndPoint";
-            responseModel.Data = "Hello World!";
-            return Ok(responseModel);
-        }
-
-
-
-        [HttpPost]
-        public IActionResult Post(RequestModel requestModel)
-        {
-
-            _logger.LogInformation("POST request received with Key: {Key}, Value: {Value}", requestModel.Key, requestModel.Value);
-
-            ResponseModel<string> responseModel = new ResponseModel<string>();
-
-
-            responseModel.Success = true;
-            responseModel.Message = "Received successfully";
-            responseModel.Data = $"key :{requestModel.Key},Value:{requestModel.Value}";
-            return Ok(responseModel);
-        }
-
-
-
-        [HttpPut]
-        public IActionResult Put(RequestModel requestModel)
-        {
-
-            _logger.LogInformation("PUT request received with Key: {Key}, Value: {Value}", requestModel.Key, requestModel.Value);
-
-            ResponseModel<string> responseModel = new ResponseModel<string>
+            logger.Info("GET request received.");
+            var responseModel = new ResponseModel<string>
             {
                 Success = true,
-                Message = "Updated successfully",
+                Message = "Hello to Greeting App API Endpoint",
+                Data = "Hello World"
+            };
+            logger.Info("GET response: {@Response}", responseModel);
+            return Ok(responseModel);
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] RequestModel requestModel)
+        {
+            logger.Info($"POST request received: Key={requestModel.Key}, Value={requestModel.Value}");
+
+            var responseModel = new ResponseModel<string>
+            {
+                Success = true,
+                Message = "Request received successfully",
                 Data = $"Key: {requestModel.Key}, Value: {requestModel.Value}"
             };
 
+            logger.Info("POST response: {@Response}", responseModel);
+            return Ok(responseModel);
+        }
+
+        [HttpPut]
+        public IActionResult Put([FromBody] RequestModel requestModel)
+        {
+            logger.Info($"PUT request received: Key={requestModel.Key}, Value={requestModel.Value}");
+
+            var responseModel = new ResponseModel<string>
+            {
+                Success = true,
+                Message = "Data Updated Successfully",
+                Data = $"Key: {requestModel.Key}, Value: {requestModel.Value}"
+            };
+
+            logger.Info("PUT response: {@Response}", responseModel);
             return Ok(responseModel);
         }
 
         [HttpPatch]
-        public IActionResult Patch(RequestModel requestModel)
+        public IActionResult Patch([FromBody] RequestModel requestModel)
         {
-            _logger.LogInformation("PATCH request received with Key: {Key}, Value: {Value}", requestModel.Key, requestModel.Value);
-            ResponseModel<string> responseModel = new ResponseModel<string>
+            logger.Info($"PATCH request received: Key={requestModel.Key}, Value={requestModel.Value}");
+
+            var data = new
             {
-                Success = true,
-                Message = "Partially updated successfully",
-                Data = $"Key: {requestModel.Key}, Value: {requestModel.Value}"
+                key = string.IsNullOrWhiteSpace(requestModel.Key) ? "Not updated" : requestModel.Key,
+                value = string.IsNullOrWhiteSpace(requestModel.Value) ? "Not updated" : requestModel.Value
             };
 
+            var responseModel = new ResponseModel<string>
+            {
+                Success = true,
+                Message = "Data Updated Successfully",
+                Data = $"Key: {data.key}, Value: {data.value}"
+            };
+
+            logger.Info("PATCH response: {@Response}", responseModel);
             return Ok(responseModel);
         }
 
         [HttpDelete]
-        public IActionResult Delete(RequestModel requestModel)
+        public IActionResult Delete([FromBody] RequestModel requestModel)
         {
-            _logger.LogInformation("DELETE request received for Key: {Key}", requestModel.Key);
+            logger.Info($"DELETE request received: Key={requestModel.Key}, Value={requestModel.Value}");
 
-            ResponseModel<string> responseModel = new ResponseModel<string>
+            var responseModel = new ResponseModel<string>
             {
                 Success = true,
-                Message = "Deleted successfully",
+                Message = "Data Deleted Successfully",
                 Data = $"Key: {requestModel.Key}, Value: {requestModel.Value}"
             };
 
+            logger.Info("DELETE response: {@Response}", responseModel);
             return Ok(responseModel);
         }
 
+
+        [HttpGet("Greetings")]
+
+        public IActionResult Greeting()
+        {
+            logger.Info("GET request received.");
+
+            var response = _greetingBL.Greet("Hello World");
+
+            logger.Info("GET response: {@Response}", response);
+
+            return Ok(response);
+        }
     }
 }
