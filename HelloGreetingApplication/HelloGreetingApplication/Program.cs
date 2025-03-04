@@ -9,6 +9,7 @@ using RepositoryLayer.Interface;
 using RepositoryLayer.Service;
 
 
+
 var logger = LogManager.Setup().LoadConfigurationFromFile("nlog.config").GetCurrentClassLogger();
 try
 {
