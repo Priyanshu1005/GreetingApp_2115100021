@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModelLayer.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace BusinessLayer.Interface
 {
     public interface IGreetingBL
     {
-        string Greet(string message);
+        string GetGreeting(string firstName = "", string lastName = "");
     }
 }

@@ -8,8 +8,9 @@ namespace ModelLayer.Model
 {
     public class RequestModel
     {
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
 
-        public string Key { get; set; }
-        public string Value { get; set; }
     }
 }
