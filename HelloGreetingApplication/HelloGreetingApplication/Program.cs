@@ -1,12 +1,8 @@
 
-using BusinessLayer.Interface;
-using BusinessLayer.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLog;
-using RepositoryLayer.Interface;
-using RepositoryLayer.Service;
 
 
 var logger = LogManager.Setup().LoadConfigurationFromFile("nlog.config").GetCurrentClassLogger();
@@ -25,9 +21,6 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    // Registering the services
-    builder.Services.AddScoped<IGreetingBL, GreetingBL>();
-    builder.Services.AddScoped<IGreetingRL, GreetingRL>();
     var app = builder.Build();
 
     // Swagger Enable
