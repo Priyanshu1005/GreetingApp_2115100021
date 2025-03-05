@@ -43,5 +43,20 @@ namespace BusinessLayer.Service
             };
             return greetingModel;
         }
+
+        public List<GreetingModel> GetAllGreetings()
+        {
+            List<GreetingEntity> greetingEntities = _helloGreetingContext.Greetings.ToList();
+            List<GreetingModel> greetingModels = new List<GreetingModel>();
+            foreach (var greetingEntity in greetingEntities)
+            {
+                GreetingModel greetingModel = new GreetingModel()
+                {
+                    GreetingMessage = greetingEntity.Greeting,
+                };
+                greetingModels.Add(greetingModel);
+            }
+            return greetingModels;
+        }
     }
 }
