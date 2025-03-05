@@ -33,5 +33,15 @@ namespace BusinessLayer.Service
             _helloGreetingContext.SaveChanges();
             return greetingEntity;
         }
+
+        public GreetingModel GetGreetingById(int id)
+        {
+            GreetingEntity greetingEntity = _helloGreetingContext.Greetings.Find(id);
+            GreetingModel greetingModel = new GreetingModel()
+            {
+                GreetingMessage = greetingEntity.Greeting,
+            };
+            return greetingModel;
+        }
     }
 }
