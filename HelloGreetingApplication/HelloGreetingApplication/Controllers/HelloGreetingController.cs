@@ -182,5 +182,38 @@ namespace HelloGreetingApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// edit the greeting message stored in the repository
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="greetModel"></param>
+        /// <returns></returns>
+
+        [HttpPut("EditGreeting/{id}")]
+        public IActionResult EditGreeting(int id, GreetingModel greetModel)
+        {
+            ResponseModel<GreetingModel> response = new ResponseModel<GreetingModel>();
+            try
+            {
+                var result = _greetingBL.EditGreeting(id, greetModel);
+                if (result != null)
+                {
+                    response.Success = true;
+                    response.Message = "Greeting Message Updated Successfully";
+                    response.Data = result;
+                    return Ok(response);
+                }
+                response.Success = false;
+                response.Message = "Greeting Message Not Found";
+                return NotFound(response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = $"An error occurred: {ex.Message}";
+                return StatusCode(500, response);
+            }
+        }
+
     }
 }

@@ -23,6 +23,8 @@ namespace BusinessLayer.Service
         {
             _helloGreetingContext = helloGreetingContext;
         }
+
+        //save greeting message in the repository
         public GreetingEntity SaveGreeting(GreetingModel greetingModel)
         {
             GreetingEntity greetingEntity = new GreetingEntity()
@@ -33,7 +35,7 @@ namespace BusinessLayer.Service
             _helloGreetingContext.SaveChanges();
             return greetingEntity;
         }
-
+        //get greeting by id from the repository
         public GreetingModel GetGreetingById(int id)
         {
             GreetingEntity greetingEntity = _helloGreetingContext.Greetings.Find(id);
@@ -43,7 +45,7 @@ namespace BusinessLayer.Service
             };
             return greetingModel;
         }
-
+        //get all greetings from the repository
         public List<GreetingModel> GetAllGreetings()
         {
             List<GreetingEntity> greetingEntities = _helloGreetingContext.Greetings.ToList();
@@ -57,6 +59,15 @@ namespace BusinessLayer.Service
                 greetingModels.Add(greetingModel);
             }
             return greetingModels;
+        }
+
+        //update the greeting message in the repository
+        public GreetingModel UpdateGreeting(int id, GreetingModel greetingModel)
+        {
+            GreetingEntity greetingEntity = _helloGreetingContext.Greetings.Find(id);
+            greetingEntity.Greeting = greetingModel.GreetingMessage;
+            _helloGreetingContext.SaveChanges();
+            return greetingModel;
         }
     }
 }
