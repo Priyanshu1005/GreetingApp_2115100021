@@ -215,5 +215,35 @@ namespace HelloGreetingApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// delete the greeting message stored in the repository
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteGreeting/{id}")]
+        public IActionResult DeleteGreeting(int id)
+        {
+            ResponseModel<string> response = new ResponseModel<string>();
+            try
+            {
+                bool result = _greetingBL.DeleteGreeting(id);
+                if (result)
+                {
+                    response.Success = true;
+                    response.Message = "Greeting Message Deleted Successfully";
+                    return Ok(response);
+                }
+                response.Success = false;
+                response.Message = "Greeting Message Not Found";
+                return NotFound(response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = $"An error occurred: {ex.Message}";
+                return StatusCode(500, response);
+            }
+        }
+
     }
 }

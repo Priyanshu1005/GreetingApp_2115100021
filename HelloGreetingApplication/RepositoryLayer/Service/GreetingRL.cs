@@ -69,5 +69,17 @@ namespace BusinessLayer.Service
             _helloGreetingContext.SaveChanges();
             return greetingModel;
         }
+
+       public bool DeleteGreeting(int id)
+        {
+            GreetingEntity greetingEntity = _helloGreetingContext.Greetings.Find(id);
+            if (greetingEntity != null)
+            {
+                _helloGreetingContext.Greetings.Remove(greetingEntity);
+                _helloGreetingContext.SaveChanges();
+                return true;
+            }
+            return false;
+        }
     }
 }
