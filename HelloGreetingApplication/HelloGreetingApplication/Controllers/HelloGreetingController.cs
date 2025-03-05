@@ -3,7 +3,6 @@ using Microsoft.Extensions.Logging;
 using ModelLayer.Model;
 using BusinessLayer.Interface;
 using NLog;
-using RepositoryLayer.Service;
 
 namespace HelloGreetingApplication.Controllers
 {
@@ -55,6 +54,23 @@ namespace HelloGreetingApplication.Controllers
             };
             return Ok(response);
         }
+
+        [HttpPost]
+        [Route("save")]
+        public IActionResult SaveGreeting([FromBody] GreetingModel greetingModel)
+        {
+            var result = _greetingBL.SaveGreeting(greetingModel);
+
+            var response = new ResponseModel<object>
+            {
+                Success = true,
+                Message = "Greeting created",
+                Data = result
+            };
+            return Created("Greeting Created", response);
+
+        }
+
         [HttpPut]
         public IActionResult Put([FromBody] RequestModel requestModel)
         {
