@@ -10,5 +10,6 @@ namespace BusinessLayer.Interface
     public interface IGreetingBL
     {
         string GetGreeting(string firstName = "", string lastName = "");
+        GreetingResponseModel SaveGreeting(GreetingModel greetingModel);
     }
 }
