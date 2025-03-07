@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using NLog;
 using RepositoryLayer.Context;
 using RepositoryLayer.Interface;
+using RepositoryLayer.Service;
 
 
 var logger = LogManager.Setup().LoadConfigurationFromFile("nlog.config").GetCurrentClassLogger();
