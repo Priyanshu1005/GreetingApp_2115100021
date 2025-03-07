@@ -8,7 +8,7 @@ using RepositoryLayer.Context;
 using RepositoryLayer.Entity;
 using RepositoryLayer.Interface;
 
-namespace BusinessLayer.Service
+namespace RepositoryLayer.Service
 {
     public class GreetingRL : IGreetingRL
     {
