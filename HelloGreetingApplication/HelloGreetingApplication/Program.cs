@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Middleware.GlobalExceptionHandler;
 using NLog;
 using RepositoryLayer.Context;
 using RepositoryLayer.Interface;
@@ -33,10 +34,11 @@ try
     var connectionString = builder.Configuration.GetConnectionString("SqlConnection");
     builder.Services.AddDbContext<HelloGreetingContext>(options => options.UseSqlServer(connectionString));
 
+
     var app = builder.Build();
 
     // Swagger Enable
-
+    app.UseMiddleware<GlobalExceptionMiddleware>();
     app.UseSwagger();
     app.UseSwaggerUI();
 
